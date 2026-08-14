@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2024 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<com.google.android.setupdesign.GlifLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/setup_wizard_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/SudContentFrame"
+        android:layout_marginTop="@dimen/base_margin_top">
+
+        <FrameLayout
+            android:id="@+id/page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="@dimen/content_margin_left"
+                    android:paddingEnd="@dimen/content_margin_left"
+                    android:paddingTop="@dimen/content_margin_top"
+                    android:paddingBottom="@dimen/content_margin_bottom">
+
+                    <TextView
+                        android:id="@+id/custom_key_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/custom_key_description"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_marginBottom="@dimen/content_margin_bottom" />
+
+                    <Button
+                        android:id="@+id/accessibility_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/open_accessibility_settings"
+                        style="@style/SudButton.Primary" />
+
+                    <TextView
+                        android:id="@+id/custom_key_instruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/custom_key_instruction"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_marginTop="@dimen/content_margin_top"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                </LinearLayout>
+            </ScrollView>
+        </FrameLayout>
+
+        <org.lineageos.setupwizard.NavigationLayout
+            android:id="@+id/navigation_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</com.google.android.setupdesign.GlifLayout>

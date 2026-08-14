@@ -1,52 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2016 The CyanogenMod Project
+     SPDX-FileCopyrightText: 2014 Google Inc.
      SPDX-FileCopyrightText: The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <WizardScript xmlns:wizard="http://schemas.android.com/apk/res/com.google.android.setupwizard"
-    wizard:firstAction="welcome">
+    wizard:firstAction="locale">
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_WELCOME;end"
-        id="welcome">
-        <result wizard:name="skip" wizard:resultCode="1" />
-        <result wizard:action="restore" />
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCALE;end"
+        id="locale">
+        <result wizard:action="datetime" />
     </WizardAction>
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_RESTORE_BACKUP;end"
-        id="restore">
-        <result wizard:action="location_settings" />
-    </WizardAction>
-
-    <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCATION_SETTINGS;end"
-        id="location_settings">
-        <result wizard:action="biometric_settings" />
-    </WizardAction>
-
-    <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_BIOMETRIC_SETTINGS;end"
-        id="biometric_settings">
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_DATETIME;end"
+        id="datetime">
         <result wizard:action="lockscreen_settings" />
     </WizardAction>
 
     <WizardAction
         wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCKSCREEN_SETTINGS;end"
         id="lockscreen_settings">
-        <result wizard:action="theme_settings" />
+        <result wizard:action="custom_key_info" />
     </WizardAction>
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.THEME_SETTINGS;end"
-        id="theme_settings">
-        <result wizard:action="navigation_settings" />
-    </WizardAction>
-
-    <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.NAVIGATION_SETTINGS;end"
-        id="navigation_settings">
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.CUSTOM_KEY_INFO;end"
+        id="custom_key_info">
         <result wizard:action="finish" />
     </WizardAction>
 

@@ -6,24 +6,29 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <WizardScript xmlns:wizard="http://schemas.android.com/apk/res/com.google.android.setupwizard"
-    wizard:firstAction="welcome">
+    wizard:firstAction="locale">
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_WELCOME;end"
-        id="welcome">
-        <result wizard:name="skip" wizard:resultCode="1" />
-        <result wizard:action="restore" />
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCALE;end"
+        id="locale">
+        <result wizard:action="datetime" />
     </WizardAction>
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_RESTORE_BACKUP;end"
-        id="restore">
-        <result wizard:action="location_settings" />
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_DATETIME;end"
+        id="datetime">
+        <result wizard:action="lockscreen_settings" />
     </WizardAction>
 
     <WizardAction
-        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCATION_SETTINGS;end"
-        id="location_settings">
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCKSCREEN_SETTINGS;end"
+        id="lockscreen_settings">
+        <result wizard:action="custom_key_info" />
+    </WizardAction>
+
+    <WizardAction
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.CUSTOM_KEY_INFO;end"
+        id="custom_key_info">
         <result wizard:action="finish" />
     </WizardAction>
 

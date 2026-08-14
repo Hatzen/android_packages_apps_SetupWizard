@@ -6,6 +6,7 @@
 
 package org.lineageos.setupwizard;
 
+import android.app.admin.DevicePolicyManager;
 import android.content.Intent;
 
 public class ScreenLockActivity extends SubBaseActivity {
@@ -15,6 +16,7 @@ public class ScreenLockActivity extends SubBaseActivity {
     @Override
     protected void onStartSubactivity() {
         Intent intent = new Intent(ACTION_SETUP_LOCKSCREEN);
+        intent.putExtra("password_type", DevicePolicyManager.PASSWORD_QUALITY_ALPHANUMERIC);
         startSubactivity(intent);
     }
 }

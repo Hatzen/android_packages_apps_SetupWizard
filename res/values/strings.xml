@@ -81,4 +81,10 @@
     <string name="theme_summary">Dark theme uses a black background to help keep battery alive longer on some screens</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
+
+    <!-- Custom Key page -->
+    <string name="custom_key_title">Custom Key</string>
+    <string name="custom_key_description">You can assign a custom key action to your device\'s hardware keys. This feature requires Accessibility Services to be enabled.</string>
+    <string name="open_accessibility_settings">Open Accessibility Settings</string>
+    <string name="custom_key_instruction">Please activate Accessibility Services for CustomOtterApp to enable custom key functionality.</string>
 </resources>
