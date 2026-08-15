@@ -23,6 +23,12 @@
     <WizardAction
         wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_LOCKSCREEN_SETTINGS;end"
         id="lockscreen_settings">
+        <result wizard:action="navigation" />
+    </WizardAction>
+
+    <WizardAction
+        wizard:uri="intent:#Intent;action=org.lineageos.setupwizard.LINEAGE_NAVIGATION;end"
+        id="navigation">
         <result wizard:action="custom_key_info" />
     </WizardAction>
 

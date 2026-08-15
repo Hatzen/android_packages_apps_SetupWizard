@@ -67,7 +67,7 @@ public class NavigationSettingsActivity extends BaseSetupWizardActivity {
 
         // Hide this page if the device has hardware keys but didn't enable navbar
         // or if there's <= 1 available navigation modes
-        if (!navBarEnabled && hasHomeKey || available <= 1) {
+        if ((!navBarEnabled && hasHomeKey) || available <= 1) {
             mSetupWizardApp.getSettingsBundle().putString(NAVIGATION_OPTION_KEY,
                     NAV_BAR_MODE_3BUTTON_OVERLAY);
             finishAction(RESULT_OK);

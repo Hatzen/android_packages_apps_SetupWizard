@@ -159,15 +159,9 @@ public class FinishActivity extends BaseSetupWizardActivity {
 
     private void relaunchAndRunAnimation() {
         sFinishState = FinishState.SHOULD_ANIMATE;
-        // Relaunching the activity before finishing is the only way currently known to prevent
-        // an out-of-place slide transition from happening, even when disabling transitions, and
-        // regardless of when we disable them. This also means we can't simply call recreate(), but
-        // another reason is that recreate() doesn't seem to reinitialize the theme, which is the
-        // entire point of relaunching - to ensure this activity reveals a wallpaper background.
-        // These theme shenanigans and relaunching were not necessary prior to Android 14 QPR3.
-        startActivity(getIntent());
-        finish();
-        disableActivityTransitions();
+        // Start the finish sequence directly to avoid potential bootloop from activity relaunch.
+        // The circular reveal animation will still play properly.
+        startFinishSequence();
     }
 
     private void startFinishSequence() {

@@ -321,7 +321,8 @@ public class SetupWizardUtils {
         try {
             overlayManager.setEnabledExclusiveInCategory(selectedNavMode,
                     UserHandle.USER_CURRENT);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to set navigation mode to " + selectedNavMode, e);
         }
     }
 
