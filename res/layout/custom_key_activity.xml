@@ -35,7 +35,7 @@
                     android:paddingStart="@dimen/content_margin_left"
                     android:paddingEnd="@dimen/content_margin_left"
                     android:paddingTop="@dimen/content_margin_top"
-                    android:paddingBottom="@dimen/content_margin_bottom">
+                    android:paddingBottom="@dimen/content_margin_top">
 
                     <TextView
                         android:id="@+id/custom_key_description"
@@ -43,14 +43,14 @@
                         android:layout_height="wrap_content"
                         android:text="@string/custom_key_description"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_marginBottom="@dimen/content_margin_bottom" />
+                        android:layout_marginBottom="@dimen/content_margin_top" />
 
                     <Button
                         android:id="@+id/accessibility_button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/open_accessibility_settings"
-                        style="@style/SudButton.Primary" />
+                        style="@style/SudGlifButton.Primary" />
 
                     <TextView
                         android:id="@+id/custom_key_instruction"

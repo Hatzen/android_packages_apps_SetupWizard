@@ -29,9 +29,6 @@ public class NetworkSetupActivity extends SubBaseActivity {
             finishAction(RESULT_SKIP);
             return;
         }
-        if (SetupWizardUtils.isOwner()) {
-            tryEnablingWifi();
-        }
         Intent intent = new Intent(ACTION_SETUP_NETWORK);
         intent.putExtra(EXTRA_PREFS_SHOW_BUTTON_BAR, true);
         intent.putExtra(EXTRA_PREFS_SHOW_SKIP, true);
