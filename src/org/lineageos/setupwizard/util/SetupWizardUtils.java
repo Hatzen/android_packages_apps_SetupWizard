@@ -12,14 +12,20 @@ import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 import static android.content.pm.PackageManager.DONT_KILL_APP;
 import static android.content.pm.PackageManager.GET_ACTIVITIES;
 import static android.telephony.TelephonyManager.PHONE_TYPE_GSM;
+import static android.view.WindowManagerPolicyConstants.NAV_BAR_MODE_3BUTTON_OVERLAY;
 
 import static com.google.android.setupcompat.util.ResultCodes.RESULT_SKIP;
 
+import static org.lineageos.setupwizard.SetupWizardApp.AIRPLANE_MODE_ON;
 import static org.lineageos.setupwizard.SetupWizardApp.DISABLE_NAV_KEYS;
 import static org.lineageos.setupwizard.SetupWizardApp.ENABLE_RECOVERY_UPDATE;
+import static org.lineageos.setupwizard.SetupWizardApp.EXTENDED_RESTART_MENU;
+import static org.lineageos.setupwizard.SetupWizardApp.FORCE_KISS_LAUNCHER;
 import static org.lineageos.setupwizard.SetupWizardApp.KEY_SEND_METRICS;
+import static org.lineageos.setupwizard.SetupWizardApp.KISS_LAUNCHER_PACKAGE;
 import static org.lineageos.setupwizard.SetupWizardApp.LOGV;
 import static org.lineageos.setupwizard.SetupWizardApp.NAVIGATION_OPTION_KEY;
+import static org.lineageos.setupwizard.SetupWizardApp.SHOW_BATTERY_PERCENT;
 import static org.lineageos.setupwizard.SetupWizardApp.UPDATE_RECOVERY_PROP;
 
 import android.app.StatusBarManager;
@@ -31,6 +37,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.om.IOverlayManager;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.hardware.biometrics.BiometricManager;
 import android.net.ConnectivityManager;
@@ -191,6 +198,10 @@ public class SetupWizardUtils {
         handleNavKeys(context);
         handleRecoveryUpdate();
         handleNavigationOption();
+        handleAirplaneMode(context);
+        handleExtendedRestartMenu(context);
+        handleBatteryPercent(context);
+        handleKissLauncher(context);
         WallpaperManager.getInstance(context).forgetLoadedWallpaper();
         disableHome(context);
         enableStatusBar();
@@ -296,16 +307,21 @@ public class SetupWizardUtils {
 
     private static void handleNavigationOption() {
         Bundle settingsBundle = SetupWizardApp.getSettingsBundle();
+        IOverlayManager overlayManager = IOverlayManager.Stub.asInterface(
+                ServiceManager.getService(Context.OVERLAY_SERVICE));
+        
+        String selectedNavMode;
         if (settingsBundle.containsKey(NAVIGATION_OPTION_KEY)) {
-            IOverlayManager overlayManager = IOverlayManager.Stub.asInterface(
-                    ServiceManager.getService(Context.OVERLAY_SERVICE));
-            String selectedNavMode = settingsBundle.getString(NAVIGATION_OPTION_KEY);
+            selectedNavMode = settingsBundle.getString(NAVIGATION_OPTION_KEY);
+        } else {
+            // Default to 3-button navigation
+            selectedNavMode = NAV_BAR_MODE_3BUTTON_OVERLAY;
+        }
 
-            try {
-                overlayManager.setEnabledExclusiveInCategory(selectedNavMode,
-                        UserHandle.USER_CURRENT);
-            } catch (Exception ignored) {
-            }
+        try {
+            overlayManager.setEnabledExclusiveInCategory(selectedNavMode,
+                    UserHandle.USER_CURRENT);
+        } catch (Exception ignored) {
         }
     }
 
@@ -350,5 +366,53 @@ public class SetupWizardUtils {
             }
         }
         return true;
+    }
+
+    private static void handleAirplaneMode(Context context) {
+        // Always enable airplane mode
+        Settings.Global.putInt(context.getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON, 1);
+        // Broadcast the change
+        Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        intent.putExtra("state", true);
+        context.sendBroadcast(intent);
+    }
+
+    private static void handleExtendedRestartMenu(Context context) {
+        // Enable extended restart menu (LineageOS specific setting)
+        LineageSettings.Secure.putInt(context.getContentResolver(),
+                LineageSettings.Secure.ADVANCED_REBOOT, 1);
+    }
+
+    private static void handleBatteryPercent(Context context) {
+        // Show battery percentage
+        Settings.System.putInt(context.getContentResolver(),
+                Settings.System.SHOW_BATTERY_PERCENT, 1);
+    }
+
+    private static void handleKissLauncher(Context context) {
+        // Force KISS Launcher as default if installed
+        if (isPackageInstalled(context, KISS_LAUNCHER_PACKAGE)) {
+            // Disable all other launchers and enable KISS
+            PackageManager pm = context.getPackageManager();
+            Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+            homeIntent.addCategory(Intent.CATEGORY_HOME);
+            List<ResolveInfo> resolveInfos = pm.queryIntentActivities(homeIntent, 0);
+
+            for (ResolveInfo info : resolveInfos) {
+                String packageName = info.activityInfo.packageName;
+                if (!packageName.equals(KISS_LAUNCHER_PACKAGE) &&
+                        !packageName.equals("org.lineageos.setupwizard")) {
+                    // Disable other launchers
+                    try {
+                        pm.setApplicationEnabledSetting(packageName,
+                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                PackageManager.DONT_KILL_APP);
+                    } catch (Exception e) {
+                        Log.w(TAG, "Failed to disable launcher: " + packageName, e);
+                    }
+                }
+            }
+        }
     }
 }

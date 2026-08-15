@@ -19,7 +19,6 @@ import android.annotation.Nullable;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -216,9 +215,7 @@ public abstract class BaseSetupWizardActivity extends AppCompatActivity implemen
     }
 
     protected final void onSetupStart() {
-        if (SetupWizardUtils.isOwner()) {
-            tryEnablingWifi();
-        }
+        // No longer enable WiFi as we're running in airplane mode
     }
 
     public void finish() {
@@ -285,11 +282,6 @@ public abstract class BaseSetupWizardActivity extends AppCompatActivity implemen
             }
             Log.v(TAG, append.append(extras).append(")").toString());
         }
-    }
-
-    protected final boolean tryEnablingWifi() {
-        WifiManager wifiManager = getSystemService(WifiManager.class);
-        return wifiManager != null && wifiManager.setWifiEnabled(true);
     }
 
     private boolean isFirstRun() {

@@ -46,6 +46,13 @@ public class SetupWizardApp extends Application {
 
     public static final String NAVIGATION_OPTION_KEY = "navigation_option";
 
+    // Additional custom defaults
+    public static final String AIRPLANE_MODE_ON = "airplane_mode_on";
+    public static final String EXTENDED_RESTART_MENU = "extended_restart_menu";
+    public static final String SHOW_BATTERY_PERCENT = "show_battery_percent";
+    public static final String FORCE_KISS_LAUNCHER = "force_kiss_launcher";
+    public static final String KISS_LAUNCHER_PACKAGE = "fr.neamar.kiss";
+
     public static final int RADIO_READY_TIMEOUT = 10 * 1000;
 
     private static StatusBarManager sStatusBarManager;
