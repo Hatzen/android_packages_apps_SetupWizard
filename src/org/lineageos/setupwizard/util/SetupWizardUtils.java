@@ -20,7 +20,6 @@ import static org.lineageos.setupwizard.SetupWizardApp.AIRPLANE_MODE_ON;
 import static org.lineageos.setupwizard.SetupWizardApp.DISABLE_NAV_KEYS;
 import static org.lineageos.setupwizard.SetupWizardApp.ENABLE_RECOVERY_UPDATE;
 import static org.lineageos.setupwizard.SetupWizardApp.EXTENDED_RESTART_MENU;
-import static org.lineageos.setupwizard.SetupWizardApp.FORCE_KISS_LAUNCHER;
 import static org.lineageos.setupwizard.SetupWizardApp.KEY_SEND_METRICS;
 import static org.lineageos.setupwizard.SetupWizardApp.KISS_LAUNCHER_PACKAGE;
 import static org.lineageos.setupwizard.SetupWizardApp.LOGV;
@@ -30,6 +29,8 @@ import static org.lineageos.setupwizard.SetupWizardApp.UPDATE_RECOVERY_PROP;
 
 import android.app.StatusBarManager;
 import android.app.WallpaperManager;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,11 +38,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.om.IOverlayManager;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.hardware.biometrics.BiometricManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
@@ -201,7 +202,9 @@ public class SetupWizardUtils {
         handleAirplaneMode(context);
         handleExtendedRestartMenu(context);
         handleBatteryPercent(context);
-        handleKissLauncher(context);
+        handleDeveloperOptions(context);
+        handleBluetooth(context);
+        handleNfc(context);
         WallpaperManager.getInstance(context).forgetLoadedWallpaper();
         disableHome(context);
         enableStatusBar();
@@ -391,6 +394,34 @@ public class SetupWizardUtils {
                 Settings.System.SHOW_BATTERY_PERCENT, 1);
     }
 
+    private static void handleDeveloperOptions(Context context) {
+        // Enable developer options and ADB
+        Settings.Global.putInt(context.getContentResolver(),
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 1);
+        Settings.Global.putInt(context.getContentResolver(),
+                Settings.Global.ADB_ENABLED, 1);
+    }
+
+    private static void handleBluetooth(Context context) {
+        // Disable Bluetooth
+        BluetoothManager bluetoothManager = context.getSystemService(BluetoothManager.class);
+        if (bluetoothManager != null) {
+            BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+            if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
+                bluetoothAdapter.disable();
+            }
+        }
+    }
+
+    private static void handleNfc(Context context) {
+        // Disable NFC
+        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(context);
+        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
+            nfcAdapter.disable();
+        }
+    }
+
+    // TODO: Keep if we want to force set this launcher
     private static void handleKissLauncher(Context context) {
         // Force KISS Launcher as default if installed
         if (isPackageInstalled(context, KISS_LAUNCHER_PACKAGE)) {
